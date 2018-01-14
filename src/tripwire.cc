@@ -57,6 +57,14 @@ NAN_METHOD(resetTripwire)
     }
 }
 
+NAN_METHOD(resumeTripwire)
+{
+	isolate = info.GetIsolate();
+	if (isolate.IsExecutionTerminating()) {
+		isolate->CancelTerminateExecution();
+	}
+}
+
 NAN_METHOD(getContext)
 {
     Nan::EscapableHandleScope scope;
@@ -79,6 +87,9 @@ NAN_MODULE_INIT(init)
     Nan::Set(target,
         Nan::New<v8::String>("resetTripwire").ToLocalChecked(),
         Nan::New<v8::FunctionTemplate>(resetTripwire)->GetFunction());
+	Nan::Set(target,
+		Nan::New<v8::String>("resumeTripwire").ToLocalChecked(),
+		Nan::New<v8::FunctionTemplate>(resumeTripwire)->GetFunction());
     Nan::Set(target,
         Nan::New<v8::String>("clearTripwire").ToLocalChecked(),
         Nan::New<v8::FunctionTemplate>(clearTripwire)->GetFunction());
